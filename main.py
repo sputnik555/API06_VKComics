@@ -68,12 +68,12 @@ def vk_upload_image(filename, upload_url, token, group_id):
     return response['response'][0]['owner_id'], response['response'][0]['id']
 
 
-def vk_wall_post(token, owner_id, id, alt):
+def vk_wall_post(token, group_id, owner_id, id, alt):
 
     post_params = {
         'access_token': token,
         'v': '5.131',
-        'owner_id': owner_id,
+        'owner_id': '-{}'.format(group_id),
         'attachments': 'photo{}_{}'.format(owner_id, id),
         'message': alt
 
@@ -92,6 +92,6 @@ if __name__ == '__main__':
     alt = download_random_comics_image('image.png')
     upload_url = get_vk_upload_url(token, group_id)
     owner_id, id = vk_upload_image('image.png', upload_url, token, group_id)
-    vk_wall_post(token, owner_id, id, alt)
+    vk_wall_post(token, group_id, owner_id, id, alt)
 
     os.remove("image.png")
