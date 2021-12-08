@@ -1,7 +1,6 @@
 import requests
 from dotenv import load_dotenv
 import os
-import pprint
 import random
 
 
@@ -39,7 +38,6 @@ if __name__ == '__main__':
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params)
     response.raise_for_status()
 
-    pprint.pprint(response.json())
     upload_url = response.json()['response']['upload_url']
 
     with open('image.png', 'rb') as file:
@@ -47,8 +45,6 @@ if __name__ == '__main__':
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
         response = response.json()
-        pprint.pprint(response)
-
 
     params['server'] = response['server']
     params['hash'] = response['hash']
