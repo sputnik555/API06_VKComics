@@ -77,13 +77,13 @@ def save_vk_wall_photo(token, group_id, server, hash, photo):
     return response['response'][0]['owner_id'], response['response'][0]['id']
 
 
-def post_vk_wall(token, group_id, owner_id, id, alt):
+def post_vk_wall(token, group_id, owner_id, photo_id, alt):
 
     post_params = {
         'access_token': token,
         'v': '5.131',
         'owner_id': '-{}'.format(group_id),
-        'attachments': 'photo{}_{}'.format(owner_id, id),
+        'attachments': 'photo{}_{}'.format(owner_id, photo_id),
         'message': alt
 
     }
@@ -101,7 +101,7 @@ if __name__ == '__main__':
     alt = download_random_comics_image('image.png')
     upload_url = get_vk_upload_url(token, group_id)
     server, hash, photo = upload_vk_image('image.png', upload_url)
-    owner_id, id = save_vk_wall_photo(token, group_id, server, hash, photo)
-    post_vk_wall(token, group_id, owner_id, id, alt)
+    owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
+    post_vk_wall(token, group_id, owner_id, photo_id, alt)
 
     os.remove("image.png")
