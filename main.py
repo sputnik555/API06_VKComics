@@ -47,7 +47,7 @@ def get_vk_upload_url(token, group_id):
     return response.json()['response']['upload_url']
 
 
-def vk_upload_image(filename, upload_url, token, group_id):
+def vk_upload_image(filename, upload_url):
 
     with open(filename, 'rb') as file:
         files = {'photo': file}
@@ -55,13 +55,18 @@ def vk_upload_image(filename, upload_url, token, group_id):
         response.raise_for_status()
         response = response.json()
 
+    return response['server'], response['hash'], response['photo']
+
+
+def vk_save_wall_photo(token, group_id, server, hash, photo):
+
     params = {
         'access_token': token,
         'v': '5.131',
         'group_id': group_id,
-        'server': response['server'],
-        'hash': response['hash'],
-        'photo': response['photo']
+        'server': server,
+        'hash': hash,
+        'photo': photo
     }
 
     response = requests.post('https://api.vk.com/method/photos.saveWallPhoto', params=params)
@@ -94,7 +99,8 @@ if __name__ == '__main__':
 
     alt = download_random_comics_image('image.png')
     upload_url = get_vk_upload_url(token, group_id)
-    owner_id, id = vk_upload_image('image.png', upload_url, token, group_id)
+    server, hash, photo = vk_upload_image('image.png', upload_url)
+    owner_id, id = vk_save_wall_photo(token, group_id, server, hash, photo)
     vk_wall_post(token, group_id, owner_id, id, alt)
 
     os.remove("image.png")
