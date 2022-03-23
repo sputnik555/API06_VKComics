@@ -5,7 +5,6 @@ import random
 
 
 def get_comics_image_url(num):
-
     response = requests.get('https://xkcd.com/{}/info.0.json'.format(num))
     response.raise_for_status()
     response = response.json()
@@ -13,7 +12,6 @@ def get_comics_image_url(num):
 
 
 def download_file(url, filename):
-
     response = requests.get(url)
     response.raise_for_status()
     with open(filename, 'wb') as file:
@@ -21,21 +19,19 @@ def download_file(url, filename):
 
 
 def get_current_comics_num():
-
     response = requests.get('https://xkcd.com/info.0.json')
     response.raise_for_status()
     return response.json()['num']
 
 
 def download_random_comics_image(filename):
-
     num = random.randint(1, get_current_comics_num())
     url, alt = get_comics_image_url(num)
     download_file(url, filename)
     return alt
 
-def get_vk_upload_url(token, group_id):
 
+def get_vk_upload_url(token, group_id):
     params = {
         'access_token': token,
         'v': '5.131',
@@ -48,7 +44,6 @@ def get_vk_upload_url(token, group_id):
 
 
 def upload_vk_image(filename, upload_url):
-
     with open(filename, 'rb') as file:
         files = {'photo': file}
         response = requests.post(upload_url, files=files)
@@ -60,7 +55,6 @@ def upload_vk_image(filename, upload_url):
 
 
 def save_vk_wall_photo(token, group_id, server, hash, photo):
-
     params = {
         'access_token': token,
         'v': '5.131',
@@ -78,7 +72,6 @@ def save_vk_wall_photo(token, group_id, server, hash, photo):
 
 
 def post_vk_wall(token, group_id, owner_id, photo_id, alt):
-
     post_params = {
         'access_token': token,
         'v': '5.131',
@@ -99,10 +92,11 @@ if __name__ == '__main__':
     group_id = os.getenv('VK_GROUP_ID')
     filename = os.getenv('TEMPFILENAME')
 
-    alt = download_random_comics_image(filename)
-    upload_url = get_vk_upload_url(token, group_id)
-    server, hash, photo = upload_vk_image(filename, upload_url)
-    owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
-    post_vk_wall(token, group_id, owner_id, photo_id, alt)
-
-    os.remove(filename)
+    try:
+        alt = download_random_comics_image(filename)
+        upload_url = get_vk_upload_url(token, group_id)
+        server, hash, photo = upload_vk_image(filename, upload_url)
+        owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
+        post_vk_wall(token, group_id, owner_id, photo_id, alt)
+    finally:
+        os.remove(filename)
