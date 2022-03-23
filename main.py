@@ -47,7 +47,7 @@ def get_vk_upload_url(token, group_id):
     return response.json()['response']['upload_url']
 
 
-def vk_upload_image(filename, upload_url):
+def upload_vk_image(filename, upload_url):
 
     with open(filename, 'rb') as file:
         files = {'photo': file}
@@ -58,7 +58,7 @@ def vk_upload_image(filename, upload_url):
     return response['server'], response['hash'], response['photo']
 
 
-def vk_save_wall_photo(token, group_id, server, hash, photo):
+def save_vk_wall_photo(token, group_id, server, hash, photo):
 
     params = {
         'access_token': token,
@@ -76,7 +76,7 @@ def vk_save_wall_photo(token, group_id, server, hash, photo):
     return response['response'][0]['owner_id'], response['response'][0]['id']
 
 
-def vk_wall_post(token, group_id, owner_id, id, alt):
+def post_vk_wall(token, group_id, owner_id, id, alt):
 
     post_params = {
         'access_token': token,
@@ -99,8 +99,8 @@ if __name__ == '__main__':
 
     alt = download_random_comics_image('image.png')
     upload_url = get_vk_upload_url(token, group_id)
-    server, hash, photo = vk_upload_image('image.png', upload_url)
-    owner_id, id = vk_save_wall_photo(token, group_id, server, hash, photo)
-    vk_wall_post(token, group_id, owner_id, id, alt)
+    server, hash, photo = upload_vk_image('image.png', upload_url)
+    owner_id, id = save_vk_wall_photo(token, group_id, server, hash, photo)
+    post_vk_wall(token, group_id, owner_id, id, alt)
 
     os.remove("image.png")
