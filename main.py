@@ -97,11 +97,12 @@ if __name__ == '__main__':
     load_dotenv()
     token = os.getenv('VK_TOKEN')
     group_id = os.getenv('VK_GROUP_ID')
+    filename = os.getenv('TEMPFILENAME')
 
-    alt = download_random_comics_image('image.png')
+    alt = download_random_comics_image(filename)
     upload_url = get_vk_upload_url(token, group_id)
-    server, hash, photo = upload_vk_image('image.png', upload_url)
+    server, hash, photo = upload_vk_image(filename, upload_url)
     owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
     post_vk_wall(token, group_id, owner_id, photo_id, alt)
 
-    os.remove("image.png")
+    os.remove(filename)

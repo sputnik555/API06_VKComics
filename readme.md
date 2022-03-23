@@ -15,11 +15,13 @@ pip install -r requirements.txt
 2. Нажать на кнопку редактировать, скопировать параметр clint_id из адресной строки (он понадобится в следующем шаге).
 3. Выпонить процедуру [Implict Flow](https://vk.com/dev/implicit_flow_user), при этом указав параметр `scope=photos,groups,wall,offline`. Скопировать значение параметра `access_token` из адресной строки и указать его в `VK_TOKEN` в файле `.env`
 4. Указать id вашей группы в параметре `VK_GROUP_ID` файла `.env`. Узнать ID вы можете [здесь](https://regvk.com/id/)
+5. Укажите в параметре `TEMPFILENAME` файла `.env`  имя для временного файла.
 
 Пример заполненного файла `.env`:
 ```
 VK_GROUP_ID=207992301
 VK_TOKEN=a9987d71b3a932af5993c5e3d0e4f97399283dd202825fa355143df5f04d1e5e3bb35e3f642f746c709ad
+TEMPFILENAME=image.png
 ```
 ### Пример запуска скрипта
 
