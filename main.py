@@ -4,9 +4,9 @@ import os
 import random
 
 
-def get_comics_image_url(url):
+def get_comics_image_url(num):
 
-    response = requests.get(url)
+    response = requests.get('https://xkcd.com/{}/info.0.json'.format(num))
     response.raise_for_status()
     response = response.json()
     return response['img'], response['alt']
@@ -30,7 +30,7 @@ def get_current_comics_num():
 def download_random_comics_image(filename):
 
     num = random.randint(1, get_current_comics_num())
-    url, alt = get_comics_image_url('https://xkcd.com/{}/info.0.json'.format(num))
+    url, alt = get_comics_image_url(num)
     download_file(url, filename)
     return alt
 
