@@ -86,8 +86,8 @@ def vk_wall_post(token, group_id, owner_id, id, alt):
 if __name__ == '__main__':
 
     load_dotenv()
-    token = os.getenv('TOKEN')
-    group_id = os.getenv('GROUP_ID')
+    token = os.getenv('VK_TOKEN')
+    group_id = os.getenv('VK_GROUP_ID')
 
     alt = download_random_comics_image('image.png')
     upload_url = get_vk_upload_url(token, group_id)
