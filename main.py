@@ -4,18 +4,20 @@ import os
 import random
 
 
-def download_comics(url, filename):
+def get_comics_image_url(url):
 
     response = requests.get(url)
     response.raise_for_status()
     response = response.json()
+    return response['img'], response['alt']
 
-    image_response = requests.get(response['img'])
-    image_response.raise_for_status()
+
+def download_file(url, filename):
+
+    response = requests.get(url)
+    response.raise_for_status()
     with open(filename, 'wb') as file:
-        file.write(image_response.content)
-
-    return response['alt']
+        file.write(response.content)
 
 
 def get_current_comics_num():
@@ -28,8 +30,9 @@ def get_current_comics_num():
 def download_random_comics_image(filename):
 
     num = random.randint(1, get_current_comics_num())
-    return download_comics('https://xkcd.com/{}/info.0.json'.format(num), filename)
-
+    url, alt = get_comics_image_url('https://xkcd.com/{}/info.0.json'.format(num))
+    download_file(url, filename)
+    return alt
 
 def get_vk_upload_url(token, group_id):
 
