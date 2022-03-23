@@ -52,8 +52,9 @@ def upload_vk_image(filename, upload_url):
     with open(filename, 'rb') as file:
         files = {'photo': file}
         response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        response = response.json()
+
+    response.raise_for_status()
+    response = response.json()
 
     return response['server'], response['hash'], response['photo']
 
