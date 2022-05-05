@@ -40,7 +40,11 @@ def get_vk_upload_url(token, group_id):
 
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params)
     response.raise_for_status()
-    return response.json()['response']['upload_url']
+    response = response.json()
+    if 'error' in response.keys():
+        raise requests.HTTPError(response['error'])
+
+    return response['response']['upload_url']
 
 
 def upload_vk_image(filename, upload_url):
@@ -50,6 +54,8 @@ def upload_vk_image(filename, upload_url):
 
     response.raise_for_status()
     response = response.json()
+    if 'error' in response.keys():
+        raise requests.HTTPError(response['error'])
 
     return response['server'], response['hash'], response['photo']
 
@@ -67,6 +73,8 @@ def save_vk_wall_photo(token, group_id, server, hash, photo):
     response = requests.post('https://api.vk.com/method/photos.saveWallPhoto', params=params)
     response.raise_for_status()
     response = response.json()
+    if 'error' in response.keys():
+        raise requests.HTTPError(response['error'])
 
     return response['response'][0]['owner_id'], response['response'][0]['id']
 
@@ -98,5 +106,7 @@ if __name__ == '__main__':
         server, hash, photo = upload_vk_image(filename, upload_url)
         owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
         post_vk_wall(token, group_id, owner_id, photo_id, alt)
+    except requests.HTTPError as error:
+        print('Error code:{}; Message:{}'.format(error.args[0]['error_code'], error.args[0]['error_msg']))
     finally:
         os.remove(filename)
