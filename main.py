@@ -103,8 +103,8 @@ if __name__ == '__main__':
     try:
         alt = download_random_comics_image(filename)
         upload_url = get_vk_upload_url(token, group_id)
-        server, hash, photo = upload_vk_image(filename, upload_url)
-        owner_id, photo_id = save_vk_wall_photo(token, group_id, server, hash, photo)
+        server, file_hash, photo = upload_vk_image(filename, upload_url)
+        owner_id, photo_id = save_vk_wall_photo(token, group_id, server, file_hash, photo)
         post_vk_wall(token, group_id, owner_id, photo_id, alt)
     except requests.HTTPError as error:
         print('Error code:{}; Message:{}'.format(error.args[0]['error_code'], error.args[0]['error_msg']))
