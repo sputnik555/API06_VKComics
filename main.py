@@ -67,13 +67,13 @@ def upload_vk_image(filename, upload_url):
     return response['server'], response['hash'], response['photo']
 
 
-def save_vk_wall_photo(token, group_id, server, hash, photo):
+def save_vk_wall_photo(token, group_id, server, file_hash, photo):
     params = {
         'access_token': token,
         'v': '5.131',
         'group_id': group_id,
         'server': server,
-        'hash': hash,
+        'hash': file_hash,
         'photo': photo
     }
 
