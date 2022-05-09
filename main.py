@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import random
 
+
 class VKAPIError(Exception):
     def __init__(self, error):
         self.text = 'Error code:{}; Message:{}'.format(error['error_code'], error['error_msg'])
